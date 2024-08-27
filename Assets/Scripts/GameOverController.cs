@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class GameOverController : MonoBehaviour
 {
-    [SerializeField] private DiceFactory _diceFactory;
-    [SerializeField] private Score _score;
-    [SerializeField] private GameOverUI _gameOverUI;
+    [SerializeField] 
+    private DiceFactory _diceFactory;
+    [SerializeField] 
+    private Score _score;
+    [SerializeField] 
+    private GameOverUI _gameOverUI;
 
     private void Start()
     {

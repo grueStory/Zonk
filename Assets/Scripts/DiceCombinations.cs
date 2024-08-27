@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class DiceCombinations : MonoBehaviour
 {
+    [SerializeField] 
+    private Score _score;
+    
     private List<Dice> _selectedDices = new List<Dice>();
-    [SerializeField] private Score _score;
     
     public void HandleDiceSelected(Dice dice)
     {

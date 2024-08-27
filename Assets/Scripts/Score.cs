@@ -3,20 +3,31 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    [SerializeField] private ScoreUI _scoreUI;
-    [SerializeField] private int _pointsOne = 100;
-    [SerializeField] private int _pointsFive = 50;
-    [SerializeField] private int _pointsThreeOne = 1000;
-    [SerializeField] private int _pointsThreeTwo = 200;
-    [SerializeField] private int _pointsThreeThree = 300;
-    [SerializeField] private int _pointsThreeFour = 400;
-    [SerializeField] private int _pointsThreeFive = 500;
-    [SerializeField] private int _pointsThreeSix = 600;
-    [SerializeField] private int _pointsStreet = 1500;
-    [SerializeField] private int _pointsToWin = 1500;
+    [SerializeField] 
+    private ScoreUI _scoreUI;
+    [SerializeField] 
+    private int _pointsOne = 100;
+    [SerializeField] 
+    private int _pointsFive = 50;
+    [SerializeField] 
+    private int _pointsThreeOne = 1000;
+    [SerializeField] 
+    private int _pointsThreeTwo = 200;
+    [SerializeField] 
+    private int _pointsThreeThree = 300;
+    [SerializeField] 
+    private int _pointsThreeFour = 400;
+    [SerializeField] 
+    private int _pointsThreeFive = 500;
+    [SerializeField] 
+    private int _pointsThreeSix = 600;
+    [SerializeField] 
+    private int _pointsStreet = 1500;
+    [SerializeField] 
+    private int _pointsToWin = 1500;
     
     public int Value { get; private set; }
-
+    
     public event Action OnUpdated;
     public event Action OnWin;
 

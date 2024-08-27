@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour
 {
-    [SerializeField] private Color _diceClickedColor = Color.green;
+    [SerializeField] 
+    private Color _diceClickedColor = Color.green;
+    
     private Color _diceOriginalColor;
     private Renderer _diceRenderer;
     private Score _score;

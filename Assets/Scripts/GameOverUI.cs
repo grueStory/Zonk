@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameOverPanel;
-    [SerializeField] private GameObject _winPanel;
+    [SerializeField] 
+    private GameObject _gameOverPanel;
+    [SerializeField] 
+    private GameObject _winPanel;
     
     private int _isGameOver = 1;
     private int _isWin = 2;

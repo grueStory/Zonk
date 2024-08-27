@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class DiceController : MonoBehaviour
 {
-    [SerializeField] private Button _button;
+    [SerializeField] 
+    private Button _button;
+    
     private DiceFactory _diceFactory;
     private DiceCombinations _diceCombinations;
     private bool _isStartRound = false;

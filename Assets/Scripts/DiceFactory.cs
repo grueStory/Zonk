@@ -6,15 +6,18 @@ using Random = UnityEngine.Random;
 
 public class DiceFactory : MonoBehaviour
 {
-    [SerializeField] private Dice[] _dicePrefabs;
-    [SerializeField] private Transform[] _diceSpawnPoints;
-    [SerializeField] private ParticleSystem _particles;
+    [SerializeField] 
+    private Dice[] _dicePrefabs;
+    [SerializeField] 
+    private Transform[] _diceSpawnPoints;
+    [SerializeField] 
+    private ParticleSystem _particles;
     
-    public int DiceCount = 6;
     private Camera _camera;
     private Score _score;
-    
     private List<int> _usedSpawnIndices = new List<int>();
+    
+    public int DiceCount = 6;
     public List<Dice> ActiveDice = new List<Dice>();
     
     public event Action OnGameOver;
