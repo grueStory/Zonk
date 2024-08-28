@@ -1,53 +1,52 @@
 using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
 
-public class DiceController : MonoBehaviour
+namespace _Project.Scripts
 {
-    [SerializeField] 
-    private Button _button;
-    
-    private DiceFactory _diceFactory;
-    private DiceCombinations _diceCombinations;
-    private bool _isStartRound = false;
-
-    public void Construct(DiceFactory diceFactory, DiceCombinations diceCombinations)
+    public class DiceController
     {
-        _diceFactory = diceFactory;
-        _diceCombinations = diceCombinations;
-    }
+        private DiceFactory _diceFactory;
+        private DiceCombinations _diceCombinations;
+        private readonly GamePanelController _gamePanelController;
+        private bool _isStartRound = false;
 
-    public void Update()
-    {
-        HandleStartGame();
-    }
-
-    private void HandleStartGame()
-    {
-        if (_isStartRound)
+        public DiceController(DiceFactory diceFactory, DiceCombinations diceCombinations, GamePanelController gamePanelController, Round round)
         {
-            Text buttonText = _button.GetComponentInChildren<Text>();
-            buttonText.text = "Select";
+            _diceFactory = diceFactory;
+            _diceCombinations = diceCombinations;
+            _gamePanelController = gamePanelController;
         }
 
-        else
+        public void Initialize()
         {
-            Text buttonText = _button.GetComponentInChildren<Text>();
-            buttonText.text = "Roll";
+            _gamePanelController.OnRollPressed += HandleRollButton;
+            _gamePanelController.OnSelectPressed += HandleSelectButton;
+            _gamePanelController.OnSavePressed += HandleSaveButton;
         }
-    }
 
-    public void HandleDiceActionButton()
-    {
-        if (!_diceFactory.ActiveDice.Any(dice => dice.IsClicked) && !_isStartRound)
+        public void Update()
         {
-            Text buttonText = _button.GetComponentInChildren<Text>();
-            buttonText.text = "Roll";
+            HandleStartGame();
+        }
+
+        private void HandleStartGame()
+        {
+            if (_isStartRound)
+            {
+                _gamePanelController.EnableSelectButton();
+            }
+            else
+            {
+                _gamePanelController.EnableRollButton();
+            }
+        }
+
+        public void HandleRollButton()
+        {
             _diceFactory.Spawn();
             _isStartRound = true;
         }
-
-        else if (_diceFactory.ActiveDice.Any(dice => dice.IsClicked) && _isStartRound)
+        
+        public void HandleSelectButton()
         {
             foreach (Dice dice in _diceFactory.ActiveDice)
             {
@@ -63,12 +62,44 @@ public class DiceController : MonoBehaviour
             _diceCombinations.ClearSelectedDices();
             _diceFactory.Spawn();
         }
-    }
+        
+        public void HandleSaveButton()
+        {
+            _isStartRound = false;
+            _diceFactory.DestroyActiveDice();
+            _diceFactory.DiceCount = 6;
+        }
 
-    public void HandleSaveRoundButton()
-    {
-        _isStartRound = false;
-        _diceFactory.DestroyActiveDice();
-        _diceFactory.DiceCount = 6;
+        // public void HandleDiceActionButton()
+        // {
+        //     if (!_diceFactory.ActiveDice.Any(dice => dice.IsClicked) && !_isStartRound)
+        //     {
+        //         _diceFactory.Spawn();
+        //         _isStartRound = true;
+        //     }
+        //     else if (_diceFactory.ActiveDice.Any(dice => dice.IsClicked) && _isStartRound)
+        //     {
+        //         foreach (Dice dice in _diceFactory.ActiveDice)
+        //         {
+        //             if (dice.IsClicked)
+        //             {
+        //                 _diceCombinations.HandleDiceSelected(dice);
+        //                 dice.gameObject.SetActive(false);
+        //                 _diceFactory.DiceCount--;
+        //             }
+        //         }
+        //
+        //         _diceCombinations.AddScore();
+        //         _diceCombinations.ClearSelectedDices();
+        //         _diceFactory.Spawn();
+        //     }
+        // }
+        //
+        // public void HandleSaveRoundButton()
+        // {
+        //     _isStartRound = false;
+        //     _diceFactory.DestroyActiveDice();
+        //     _diceFactory.DiceCount = 6;
+        // }
     }
 }

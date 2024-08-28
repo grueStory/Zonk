@@ -2,58 +2,62 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOverUI : MonoBehaviour
+namespace _Project.Scripts
 {
-    [SerializeField] 
-    private GameObject _gameOverPanel;
-    [SerializeField] 
-    private GameObject _winPanel;
-    
-    private int _isGameOver = 1;
-    private int _isWin = 2;
-
-    public void GameOver()
+    public enum GameStatus
     {
-        StartCoroutine(Restart(_isGameOver));
+        Win,
+        Loose,
     }
     
-    public void Win()
+    public class GameOverUI : MonoBehaviour
     {
-        StartCoroutine(Restart(_isWin));
-    }
+        [SerializeField] private GameObject _gameOverPanel;
+        [SerializeField] private GameObject _winPanel;
 
-    private IEnumerator Restart(int status)
-    {
-        if (status == 1)
+        public void GameOver()
         {
-            yield return new WaitForSeconds(1f);
-
-            _gameOverPanel.SetActive(true);
-
-            while (!Input.GetKeyDown(KeyCode.Space))
-            {
-                yield return null;
-            }
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-            yield return null;
+            StartCoroutine(Restart(GameStatus.Loose));
         }
-        
-        else if (status == 2)
+
+        public void Win()
         {
-            yield return new WaitForSeconds(1f);
+            StartCoroutine(Restart(GameStatus.Win));
+        }
 
-            _winPanel.SetActive(true);
-
-            while (!Input.GetKeyDown(KeyCode.Space))
+        private IEnumerator Restart(GameStatus status)
+        {
+            if (status == GameStatus.Loose)
             {
+                yield return new WaitForSeconds(1f);
+
+                _gameOverPanel.SetActive(true);
+
+                while (!Input.GetKeyDown(KeyCode.Space))
+                {
+                    yield return null;
+                }
+
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
                 yield return null;
             }
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            else if (status == GameStatus.Win)
+            {
+                yield return new WaitForSeconds(1f);
 
-            yield return null;
+                _winPanel.SetActive(true);
+
+                while (!Input.GetKeyDown(KeyCode.Space))
+                {
+                    yield return null;
+                }
+
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+                yield return null;
+            }
         }
     }
 }

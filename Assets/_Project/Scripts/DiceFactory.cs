@@ -2,86 +2,87 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public class DiceFactory : MonoBehaviour
+namespace _Project.Scripts
 {
-    [SerializeField] 
-    private Dice[] _dicePrefabs;
-    [SerializeField] 
-    private Transform[] _diceSpawnPoints;
-    [SerializeField] 
-    private ParticleSystem _particles;
-    
-    private Camera _camera;
-    private Score _score;
-    private List<int> _usedSpawnIndices = new List<int>();
-    
-    public int DiceCount = 6;
-    public List<Dice> ActiveDice = new List<Dice>();
-    
-    public event Action OnGameOver;
-    
-    private void Awake()
+    public class DiceFactory
     {
-        _camera = Camera.main;
-    }
-
-    public void Spawn()
-    {
-        DestroyActiveDice();
-        _usedSpawnIndices.Clear();
+        public int DiceCount = 6;
+        public List<Dice> ActiveDice = new List<Dice>();
         
-        for (int i = 0; i < DiceCount; i++)
+        private Dice[] _dicePrefabs;
+        private Transform[] _diceSpawnPoints;
+        private ParticleSystem _particles;
+        private Score _score;
+        private List<int> _usedSpawnIndices = new List<int>();
+        private readonly SceneReferences _sceneReferences;
+
+        public event Action OnGameOver;
+
+        public DiceFactory(SceneReferences sceneReferences)
         {
-            Transform spawnPoint = GetRandomAvailableSpawnPoint();
-            int diceValue = Random.Range(1, 6);
-            Dice dice = Instantiate(_dicePrefabs[diceValue - 1], spawnPoint.position, Quaternion.identity);
-            Instantiate(_particles, spawnPoint.position, Quaternion.identity);
-            ActiveDice.Add(dice);
-            dice.SetValue(diceValue);
-            
-            Debug.Log(dice.DiceValue);
+            _sceneReferences = sceneReferences;
+            _dicePrefabs = _sceneReferences._dicePrefabs;
+            _diceSpawnPoints = _sceneReferences._diceSpawnPoints;
+            _particles = _sceneReferences._particles;
         }
         
-        EmptySpawnCheck();
-    }
-    
-    private Transform GetRandomAvailableSpawnPoint()
-    {
-        List<int> availableIndices = new List<int>();
-        
-        for (int i = 0; i < _diceSpawnPoints.Length; i++)
+        public void Spawn()
         {
-            if (!_usedSpawnIndices.Contains(i))
+            DestroyActiveDice();
+            _usedSpawnIndices.Clear();
+
+            for (int i = 0; i < DiceCount; i++)
             {
-                availableIndices.Add(i);
+                Transform spawnPoint = GetRandomAvailableSpawnPoint();
+                int diceValue = Random.Range(1, 6);
+                Dice dice = Object.Instantiate(_dicePrefabs[diceValue - 1], spawnPoint.position, Quaternion.identity);
+                Object.Instantiate(_particles, spawnPoint.position, Quaternion.identity);
+                ActiveDice.Add(dice);
+                dice.SetValue(diceValue);
             }
-        }
-        
-        int randomIndex = Random.Range(0, availableIndices.Count);
-        int spawnIndex = availableIndices[randomIndex];
-        _usedSpawnIndices.Add(spawnIndex);
 
-        return _diceSpawnPoints[spawnIndex];
-    }
-    
-    public void DestroyActiveDice()
-    {
-        foreach (Dice dice in ActiveDice)
-        {
-            Destroy(dice.gameObject);
+            EmptySpawnCheck();
         }
-        
-        ActiveDice.Clear();
-    }
 
-    private void EmptySpawnCheck()
-    {
-        if (!ActiveDice.Any(dice => dice.DiceValue == 1 || dice.DiceValue == 5))
+        private Transform GetRandomAvailableSpawnPoint()
         {
-            OnGameOver?.Invoke();
-            //DestroyActiveDice();
+            List<int> availableIndices = new List<int>();
+
+            for (int i = 0; i < _diceSpawnPoints.Length; i++)
+            {
+                if (!_usedSpawnIndices.Contains(i))
+                {
+                    availableIndices.Add(i);
+                }
+            }
+
+            int randomIndex = Random.Range(0, availableIndices.Count);
+            int spawnIndex = availableIndices[randomIndex];
+            _usedSpawnIndices.Add(spawnIndex);
+
+            return _diceSpawnPoints[spawnIndex];
+        }
+
+        public void DestroyActiveDice()
+        {
+            foreach (Dice dice in ActiveDice)
+            {
+                Object.Destroy(dice.gameObject);
+            }
+
+            ActiveDice.Clear();
+        }
+
+        private void EmptySpawnCheck()
+        {
+            if (!ActiveDice.Any(dice => dice.DiceValue == 1 || dice.DiceValue == 5))
+            {
+                OnGameOver?.Invoke();
+                //DestroyActiveDice();
+            }
         }
     }
 }

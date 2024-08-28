@@ -1,29 +1,33 @@
 using UnityEngine;
 
-public class GameOverController : MonoBehaviour
+namespace _Project.Scripts
 {
-    [SerializeField] 
-    private DiceFactory _diceFactory;
-    [SerializeField] 
-    private Score _score;
-    [SerializeField] 
-    private GameOverUI _gameOverUI;
-
-    private void Start()
+    public class GameOverController : MonoBehaviour
     {
-        _diceFactory.OnGameOver += OnGameOver;
-        _score.OnWin += OnWin;
-    }
+        [SerializeField] private GameOverUI _gameOverUI;
+        private DiceFactory _diceFactory;
+        private Score _score;
 
-    private void OnGameOver()
-    {
-        Debug.Log("Game Over");
-        _gameOverUI.GameOver();
-    }
+        public void Construct(DiceFactory diceFactory, Score score)
+        {
+            _diceFactory = diceFactory;
+            _score = score;
+        }
+        
+        private void Start()
+        {
+            _diceFactory.OnGameOver += OnGameOver;
+            _score.OnWin += OnWin;
+        }
 
-    private void OnWin()
-    {
-        Debug.Log("Win");
-        _gameOverUI.Win();
+        private void OnGameOver()
+        {
+            _gameOverUI.GameOver();
+        }
+
+        private void OnWin()
+        {
+            _gameOverUI.Win();
+        }
     }
 }

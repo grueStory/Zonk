@@ -1,40 +1,42 @@
 using UnityEngine;
 
-public class Dice : MonoBehaviour
+namespace _Project.Scripts
 {
-    [SerializeField] 
-    private Color _diceClickedColor = Color.green;
-    
-    private Color _diceOriginalColor;
-    private Renderer _diceRenderer;
-    private Score _score;
-
-    public int DiceValue { get; private set; }
-    public bool IsClicked = false;
-    
-    public void SetValue(int value)
-    { 
-        DiceValue = value;
-    }
-
-    private void Start()
+    public class Dice : MonoBehaviour
     {
-        _diceRenderer = GetComponent<Renderer>();
-        _diceOriginalColor = _diceRenderer.material.color;
-    }
+        [SerializeField] private Color _diceClickedColor = Color.green;
 
-    private void OnMouseDown()
-    {
-        if (IsClicked)
+        private Color _diceOriginalColor;
+        private Renderer _diceRenderer;
+        private Score _score;
+
+        public int DiceValue { get; private set; }
+        public bool IsClicked = false;
+
+        public void SetValue(int value)
         {
-            _diceRenderer.material.color = _diceOriginalColor;
+            DiceValue = value;
         }
-        
-        else
+
+        private void Start()
         {
-            _diceRenderer.material.color = _diceClickedColor;
+            _diceRenderer = GetComponent<Renderer>();
+            _diceOriginalColor = _diceRenderer.material.color;
         }
-        
-        IsClicked = !IsClicked;
+
+        private void OnMouseDown()
+        {
+            if (IsClicked)
+            {
+                _diceRenderer.material.color = _diceOriginalColor;
+            }
+
+            else
+            {
+                _diceRenderer.material.color = _diceClickedColor;
+            }
+
+            IsClicked = !IsClicked;
+        }
     }
 }
