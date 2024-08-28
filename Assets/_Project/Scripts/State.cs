@@ -2,7 +2,7 @@ namespace _Project.Scripts
 {
     public enum State
     {
-        Default,
+        Stoped,
         Started,
     }
 }

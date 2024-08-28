@@ -4,12 +4,6 @@ using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts
 {
-    public enum GameStatus
-    {
-        Win,
-        Loose,
-    }
-    
     public class GameOverUI : MonoBehaviour
     {
         [SerializeField] private GameObject _gameOverPanel;

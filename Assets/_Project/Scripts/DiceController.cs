@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace _Project.Scripts
 {
     public class DiceController
@@ -7,7 +5,7 @@ namespace _Project.Scripts
         private DiceFactory _diceFactory;
         private DiceCombinations _diceCombinations;
         private readonly GamePanelController _gamePanelController;
-        private bool _isStartRound = false;
+        private State _state = State.Stoped;
 
         public DiceController(DiceFactory diceFactory, DiceCombinations diceCombinations, GamePanelController gamePanelController, Round round)
         {
@@ -30,7 +28,7 @@ namespace _Project.Scripts
 
         private void HandleStartGame()
         {
-            if (_isStartRound)
+            if (_state == State.Started)
             {
                 _gamePanelController.EnableSelectButton();
             }
@@ -40,13 +38,13 @@ namespace _Project.Scripts
             }
         }
 
-        public void HandleRollButton()
+        private void HandleRollButton()
         {
             _diceFactory.Spawn();
-            _isStartRound = true;
+            _state = State.Started;
         }
         
-        public void HandleSelectButton()
+        private void HandleSelectButton()
         {
             foreach (Dice dice in _diceFactory.ActiveDice)
             {
@@ -63,9 +61,9 @@ namespace _Project.Scripts
             _diceFactory.Spawn();
         }
         
-        public void HandleSaveButton()
+        private void HandleSaveButton()
         {
-            _isStartRound = false;
+            _state = State.Stoped;
             _diceFactory.DestroyActiveDice();
             _diceFactory.DiceCount = 6;
         }
